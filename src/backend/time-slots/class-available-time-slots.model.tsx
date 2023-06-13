@@ -1,5 +1,7 @@
+import { DocumentReference } from "firebase/firestore/lite";
+
 export default class ClassAvailableTimeSlots {
-  classRef: string;
+  classRef: DocumentReference;
   startTime: string;
   endTime: string;
   minHoursBeforeClass: number;
