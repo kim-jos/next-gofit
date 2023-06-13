@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore/lite";
 import { getUser } from "../auth/auth.service";
 import { app } from "../config";
+import ClassAvailableTimeSlots from "../time-slots/class-available-time-slots.model";
 import Reservations from "./reservations.model";
 
 const db = getFirestore(app);
@@ -44,10 +45,13 @@ async function hasReachedMaxCapacity(timeSlotRef: DocumentReference) {
       where("id", "==", timeSlotRef.id)
     )
   );
-  const timeSlot = timeSlotQuery.docs.map((doc) => ({
-    ...doc.data(),
-    id: doc.id,
-  }));
+  const timeSlot = timeSlotQuery.docs.map(
+    (doc) =>
+      ({
+        ...doc.data(),
+        id: doc.id,
+      } as unknown as ClassAvailableTimeSlots)
+  );
   const maxLimit = timeSlot[0].maxLimit;
 
   const reservationsCount = allReservationsForTimeSlot.size;

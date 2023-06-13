@@ -9,7 +9,7 @@ export default class Classes {
   distance: number;
   hideClass: boolean;
   ratings: number;
-  coords: GeoPoint;
+  coords: GeoPoint | string;
   isPopular: boolean;
   creditsRequired: number;
   paymentUrl: string;
