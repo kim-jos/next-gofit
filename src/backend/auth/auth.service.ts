@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword } from "@firebase/auth";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { UserCredential, signInWithEmailAndPassword } from "firebase/auth";
 import {
+  DocumentReference,
   collection,
   getDocs,
   getFirestore,
@@ -40,9 +41,17 @@ export async function signUp(email: string, password: string) {
   return { result, error };
 }
 
+type UserCredentials = {
+  credentials: UserCredential;
+  ref: DocumentReference;
+};
+
 export async function signIn(email: string, password: string) {
   const userCreds = await signInWithEmailAndPassword(auth, email, password);
   const userRef = await getUser(userCreds.user.uid);
-  userCreds.ref = userRef;
-  return userCreds;
+  const userCredentials: UserCredentials = {
+    credentials: userCreds,
+    ref: userRef!.ref,
+  };
+  return userCredentials;
 }
