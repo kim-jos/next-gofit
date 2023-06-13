@@ -20,8 +20,6 @@ export default function Classes({ gymList }: any) {
       }
     }
   }, [vw]);
-  console.log(gyms);
-  console.log(gyms.filter((el) => el.isPopular));
 
   return (
     <div className={isDesktop ? "items-center flex justify-center" : ""}>
@@ -30,21 +28,21 @@ export default function Classes({ gymList }: any) {
         <GymTypeCarousel />
         <ClassHorizontalCarousel
           title={"인기"}
-          classes={gyms.filter((el) => el.isPopular)}
+          classes={gyms.filter((el: any) => el.isPopular)}
         />
         <ClassHorizontalCarousel
           title={"점심가능"}
-          classes={gyms.filter((el) => !el.isPopular)}
+          classes={gyms.filter((el: any) => !el.isPopular)}
         />
         <ClassHorizontalCarousel
           title={"땀빼기"}
-          classes={gyms.filter((el) => !el.isPopular)}
+          classes={gyms.filter((el: any) => !el.isPopular)}
         />
         <ClassHorizontalCarousel
           title={"요가"}
           classes={gyms
-            .filter((el) => !el.isPopular)
-            .filter((el) => el.exerciseType === "요가")}
+            .filter((el: any) => !el.isPopular)
+            .filter((el: any) => el.exerciseType === "요가")}
         />
       </div>
     </div>

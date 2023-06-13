@@ -9,6 +9,7 @@ export default function GymTypeCarousel() {
         {Object.values(GymTypes).map((el) => {
           return (
             <div
+              key={el.en}
               className={
                 "text-center w-24 bg-white rounded-lg shadow-md border-gray-400 border-[1px] px-2"
               }
