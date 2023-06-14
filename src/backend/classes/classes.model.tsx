@@ -56,7 +56,7 @@ export default class Classes {
     instagram: string,
     price: number,
     hasShower: boolean,
-    classAvailableTimeSlotsRefs: string[]
+    classAvailableTimeSlotsRefs: DocumentReference[]
   ) {
     this.id = id;
     this.refPath = refPath;
