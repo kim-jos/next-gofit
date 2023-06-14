@@ -11,7 +11,7 @@ export default class ClassAvailableTimeSlots {
   creditsRequired: number;
 
   constructor(
-    classRef: string,
+    classRef: DocumentReference,
     startTime: string,
     endTime: string,
     minHoursBeforeClass: number,
