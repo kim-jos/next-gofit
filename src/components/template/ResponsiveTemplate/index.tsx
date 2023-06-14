@@ -1,6 +1,6 @@
-import { useViewport } from "react-viewport-hooks";
-import { useEffect, useState } from "react";
 import BottomNavigationBar from "@/components/organisms/BottomNavigationBar";
+import { useEffect, useState } from "react";
+import { useViewport } from "react-viewport-hooks";
 
 export default function ResponsiveTemplate({ children }) {
   const { vw } = useViewport();
