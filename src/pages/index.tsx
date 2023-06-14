@@ -8,6 +8,7 @@ import HeartButton from '@/components/HeartButton';
 import { getClasses } from '@/backend/classes/classes.service';
 import Classes from '@/backend/classes/classes.model';
 import ClassContainer from '@/components/ClassContainer';
+import { Inter } from "next/font/google";
 
 const Home = ({ listings }: { listings: string[] }) => {
   const parsedListings: Classes[] = listings.map((listing) => JSON.parse(listing));
@@ -15,6 +16,8 @@ const Home = ({ listings }: { listings: string[] }) => {
   if (!listings) {
     return null; // or handle the case when listings is undefined
   }
+
+const inter = Inter({ subsets: ["latin"] });
 
   return (
     <main>

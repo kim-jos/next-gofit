@@ -4,9 +4,9 @@ const nextConfig = {
   images: {
     domains: [
       "fqblipxxlrrcngcnqcoy.supabase.co",
-      "pup-review-phinf.pstatic.net",
       "search.pstatic.net",
       "ldb-phinf.pstatic.net",
+      "pup-review-phinf.pstatic.net",
     ],
   },
 };
