@@ -9,7 +9,7 @@ import "react-day-picker/dist/style.css";
 export default function MyReservations() {
   const today = new Date(Date.now());
   const [selectedDate, setSelectedDate] = useState(new Date(Date.now()));
-  const [myReservations, setMyReservations] = useState<Reservations[] | null>();
+  const [myReservations, setMyReservations] = useState<Reservations[]>();
   const signInUser = useAuthContext();
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function MyReservations() {
       }
     }
     fetchUserReservations();
-  }, []);
+  });
 
   const handleDayClick = (date: any) => {
     setSelectedDate(date);
@@ -51,15 +51,32 @@ export default function MyReservations() {
   };
 
   return (
-    <DayPicker
-      mode="single"
-      selected={selectedDate}
-      onSelect={handleDayClick}
-      disabled={isDateDisabled}
-      locale={ko}
-      fromMonth={new Date(today.getFullYear(), today.getMonth() - 1)}
-      toMonth={new Date(today.getFullYear(), today.getMonth() + 1)}
-      modifiersStyles={modifiersStyles}
-    />
+    <>
+      {myReservations !== undefined
+        ? myReservations.map((myReservation) => {
+            return (
+              <>
+                <div>수업명: {myReservation.className}</div>
+
+                <div>수업 시작 시간: {String(myReservation.startTime)}</div>
+                <div>
+                  수업 시작 시간: {String(new Date(myReservation.startTime))}
+                </div>
+                <div>수업 예약한 시간: {String(myReservation.createdAt)}</div>
+              </>
+            );
+          })
+        : null}
+      <DayPicker
+        mode="single"
+        selected={selectedDate}
+        onSelect={handleDayClick}
+        disabled={isDateDisabled}
+        locale={ko}
+        fromMonth={new Date(today.getFullYear(), today.getMonth() - 1)}
+        toMonth={new Date(today.getFullYear(), today.getMonth() + 1)}
+        modifiersStyles={modifiersStyles}
+      />
+    </>
   );
 }

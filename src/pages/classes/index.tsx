@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function ClassesPage({ gymList }: { gymList: Classes[] }) {
-  // let classes = JSON.parse(gymList);
   const [gyms, setGyms] = useState<Classes[]>(gymList);
 
   return (
