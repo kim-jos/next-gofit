@@ -1,28 +1,16 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
 UI
-1. /classes/index.tsx
-2. /classes/[id]/index.tsx
-3. /reservations/index.tsx
-4. /my-page/index.tsx
-5. /home/index.tsx
-6. auth(login, register 등) DONE
+1. 디자인 레이아웃 (광은)
+2. Bottom navigation (광은)
+3. /classes/index.tsx (광은)
+4. /reservations/index.tsx (광은)
+5. /classes/[id]/index.tsx (ANDY)
+6. /my-page/index.tsx (ANDY)
+7. /home/index.tsx (ANDY)
+8. auth(login, register 등) (ANDY)
 
 로직
 1. 수업 예약하기 (김요셉)
-2. 채널 톡
-3. 알림톡
-4. 결제 (나이스페이): 김요셉
-5. 맵 불러오기 (카카오 맵): ANDY
+2. 결제 (나이스페이): (김요셉)
+3. 채널톡 (광은)
+4. 알림톡 (광은)
+6. 맵 불러오기 (카카오 맵): (ANDY)
