@@ -1,29 +1,39 @@
-import Classes from "@/backend/classes/classes.model";
 import { getClasses } from "@/backend/classes/classes.service";
-import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import MainHeader from "@/components/molecules/MainHeader";
+import GymTypeCarousel from "@/components/organisms/GymTypeCarousel";
+import ClassHorizontalCarousel from "@/components/organisms/ClassHorizontalCarousel";
+import { useViewport } from "react-viewport-hooks";
 
-export default function ClassesPage({ gymList }: { gymList: Classes[] }) {
-  const [gyms, setGyms] = useState<Classes[]>(gymList);
+export default function Classes({ gymList }: any) {
+  let classes = JSON.parse(gymList);
+  const [gyms, setGyms] = useState(classes);
 
   return (
-    <>
-      {gyms.map((gym) => {
-        return (
-          <>
-            <Link
-              href={{
-                pathname: `/classes/${gym.refPath}`,
-                query: { ref: gym.refPath },
-              }}
-              key={gym.id}
-            >
-              {gym.name}
-            </Link>
-          </>
-        );
-      })}
-    </>
+    <div>
+      <div className={"bg-gray-100 min-h-screen flex-1 items-center"}>
+        <MainHeader />
+        <GymTypeCarousel />
+        <ClassHorizontalCarousel
+          title={"인기"}
+          classes={gyms.filter((el: any) => el.isPopular)}
+        />
+        <ClassHorizontalCarousel
+          title={"점심가능"}
+          classes={gyms.filter((el: any) => !el.isPopular)}
+        />
+        <ClassHorizontalCarousel
+          title={"땀빼기"}
+          classes={gyms.filter((el: any) => !el.isPopular)}
+        />
+        <ClassHorizontalCarousel
+          title={"요가"}
+          classes={gyms
+            .filter((el: any) => !el.isPopular)
+            .filter((el: any) => el.exerciseType === "요가")}
+        />
+      </div>
+    </div>
   );
 }
 
