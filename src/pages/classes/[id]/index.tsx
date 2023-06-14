@@ -1,17 +1,24 @@
+import ClassAvailableTimeSlots from "@/backend/time-slots/class-available-time-slots.model";
+import { getTimeSlots } from "@/backend/time-slots/class-available-time-slots.service";
 import { ko } from "date-fns/locale";
 import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
-export default function ClassDetails() {
-  const [selectedDate, setSelectedDate] = useState(new Date(Date.now()));
+interface TimeSlots {
+  slots: ClassAvailableTimeSlots;
+}
 
-  const handleDayClick = (date) => {
+export default function ClassDetails({ slots }: TimeSlots) {
+  const [selectedDate, setSelectedDate] = useState(new Date(Date.now()));
+  const [timeSlots, setTimeSlots] = useState(slots);
+
+  const handleDayClick = (date: any) => {
     console.log("selected date: ", selectedDate);
     setSelectedDate(date);
   };
 
-  const isDateSelectable = (date) => {
+  const isDateSelectable = (date: Date) => {
     const today = new Date();
     const nextWeek = new Date();
     today.setDate(today.getDate() - 1);
@@ -20,7 +27,7 @@ export default function ClassDetails() {
     return date >= today && date <= nextWeek;
   };
 
-  const isDateDisabled = (date) => {
+  const isDateDisabled = (date: Date) => {
     return !isDateSelectable(date);
   };
 
@@ -33,4 +40,12 @@ export default function ClassDetails() {
       locale={ko}
     />
   );
+}
+
+export async function getServerSideProps({ query }: any) {
+  console.log("query: ", query);
+  let slots = await getTimeSlots(query.ref);
+  return {
+    props: { slots },
+  };
 }

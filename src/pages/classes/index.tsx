@@ -1,3 +1,4 @@
+import Classes from "@/backend/classes/classes.model";
 import { getClasses } from "@/backend/classes/classes.service";
 import { useEffect, useState } from "react";
 import MainHeader from "@/components/molecules/MainHeader";
@@ -50,9 +51,8 @@ export default function Classes({ gymList }: any) {
 }
 
 export async function getServerSideProps() {
-  let gymList: any = await getClasses();
-  gymList = JSON.stringify(gymList);
-
+  const gyms = await getClasses();
+  const gymList = JSON.stringify(gyms);
   return {
     props: { gymList },
   };

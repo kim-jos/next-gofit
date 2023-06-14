@@ -1,7 +1,8 @@
-import { GeoPoint } from "firebase/firestore/lite";
+import { DocumentReference, GeoPoint } from "firebase/firestore/lite";
 
 export default class Classes {
   id: string;
+  refPath: string;
   name: string;
   image: string;
   exerciseType: string;
@@ -26,10 +27,11 @@ export default class Classes {
   instagram: string;
   price: number;
   hasShower: boolean;
-  classAvailableTimeSlotsRefs: string[];
+  classAvailableTimeSlotsRefs: DocumentReference[];
 
   constructor(
     id: string,
+    refPath: string,
     name: string,
     image: string,
     exerciseType: string,
@@ -54,9 +56,10 @@ export default class Classes {
     instagram: string,
     price: number,
     hasShower: boolean,
-    classAvailableTimeSlotsRefs: string[]
+    classAvailableTimeSlotsRefs: DocumentReference[]
   ) {
     this.id = id;
+    this.refPath = refPath;
     this.name = name;
     this.image = image;
     this.exerciseType = exerciseType;
