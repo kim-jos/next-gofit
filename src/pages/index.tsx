@@ -1,23 +1,23 @@
-import Image from 'next/image';
-import Container from '@/components/Container';
-import Logo from '@/components/navbar/Logo';
-import Search from '@/components/navbar/Search';
-import UserMenu from '@/components/navbar/UserMenu';
-import Categories from '@/components/navbar/Categories';
-import HeartButton from '@/components/HeartButton';
-import { getClasses } from '@/backend/classes/classes.service';
-import Classes from '@/backend/classes/classes.model';
-import ClassContainer from '@/components/ClassContainer';
-import { Inter } from "next/font/google";
+import Classes from "@/backend/classes/classes.model";
+import { getClasses } from "@/backend/classes/classes.service";
+import ClassContainer from "@/components/ClassContainer";
+import Container from "@/components/Container";
+import HeartButton from "@/components/HeartButton";
+import Categories from "@/components/navbar/Categories";
+import Logo from "@/components/navbar/Logo";
+import Search from "@/components/navbar/Search";
+import UserMenu from "@/components/navbar/UserMenu";
+import Image from "next/image";
 
 const Home = ({ listings }: { listings: string[] }) => {
-  const parsedListings: Classes[] = listings.map((listing) => JSON.parse(listing));
+  const parsedListings: Classes[] = listings.map((listing) =>
+    JSON.parse(listing)
+  );
+  // const inter = Inter({ subsets: ["latin"] });
 
   if (!listings) {
     return null; // or handle the case when listings is undefined
   }
-
-const inter = Inter({ subsets: ["latin"] });
 
   return (
     <main>
@@ -48,7 +48,10 @@ const inter = Inter({ subsets: ["latin"] });
             "
           >
             {parsedListings.map((parsedListing) => (
-              <div className="col-span-1 cursor-pointer group" key={parsedListing.id}>
+              <div
+                className="col-span-1 cursor-pointer group"
+                key={parsedListing.id}
+              >
                 <div className="flex flex-col gap-2 w-full">
                   <div className="aspect-square w-full relative overflow-hidden rounded-xl">
                     <Image
@@ -58,15 +61,22 @@ const inter = Inter({ subsets: ["latin"] });
                       alt="Listing"
                     />
                     <div className="absolute top-3 right-3">
-                      <HeartButton listingId={parsedListing.id} currentUser={null} />
+                      <HeartButton
+                        listingId={parsedListing.id}
+                        currentUser={null}
+                      />
                     </div>
                   </div>
-                  <div className="font-semibold text-lg text-black">{parsedListing.name}</div>
+                  <div className="font-semibold text-lg text-black">
+                    {parsedListing.name}
+                  </div>
                   <div className="font-light text-neutral-500">
                     {parsedListing.distance}
                   </div>
                   <div className="flex flex-row items-center gap-1">
-                    <div className="font-semibold text-black">₩{parsedListing.price}</div>
+                    <div className="font-semibold text-black">
+                      ₩{parsedListing.price}
+                    </div>
                   </div>
                 </div>
               </div>
