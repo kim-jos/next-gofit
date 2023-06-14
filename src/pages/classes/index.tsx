@@ -1,4 +1,3 @@
-import Classes from "@/backend/classes/classes.model";
 import { getClasses } from "@/backend/classes/classes.service";
 import { useEffect, useState } from "react";
 import MainHeader from "@/components/molecules/MainHeader";
@@ -9,22 +8,10 @@ import { useViewport } from "react-viewport-hooks";
 export default function Classes({ gymList }: any) {
   let classes = JSON.parse(gymList);
   const [gyms, setGyms] = useState(classes);
-  const { vw } = useViewport();
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  useEffect(() => {
-    if (vw) {
-      if (vw > 900) {
-        setIsDesktop(true);
-      } else {
-        setIsDesktop(false);
-      }
-    }
-  }, [vw]);
 
   return (
-    <div className={isDesktop ? "items-center flex justify-center" : ""}>
-      <div className={"bg-gray-100 min-h-screen max-w-3xl flex-1 items-center"}>
+    <div>
+      <div className={"bg-gray-100 min-h-screen flex-1 items-center"}>
         <MainHeader />
         <GymTypeCarousel />
         <ClassHorizontalCarousel
