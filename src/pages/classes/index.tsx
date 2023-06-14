@@ -1,9 +1,8 @@
 import { getClasses } from "@/backend/classes/classes.service";
-import { useEffect, useState } from "react";
 import MainHeader from "@/components/molecules/MainHeader";
-import GymTypeCarousel from "@/components/organisms/GymTypeCarousel";
 import ClassHorizontalCarousel from "@/components/organisms/ClassHorizontalCarousel";
-import { useViewport } from "react-viewport-hooks";
+import GymTypeCarousel from "@/components/organisms/GymTypeCarousel";
+import { useState } from "react";
 
 export default function Classes({ gymList }: any) {
   let classes = JSON.parse(gymList);
@@ -37,7 +36,7 @@ export default function Classes({ gymList }: any) {
   );
 }
 
-export async function getServerSideProps() {
+export async function x() {
   const gyms = await getClasses();
   const gymList = JSON.stringify(gyms);
   return {
