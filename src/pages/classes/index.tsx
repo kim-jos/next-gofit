@@ -1,9 +1,8 @@
 import { getClasses } from "@/backend/classes/classes.service";
-import { useEffect, useState } from "react";
-import MainHeader from "@/components/molecules/MainHeader";
+import { useState } from "react";
 import GymTypeCarousel from "@/components/organisms/GymTypeCarousel";
 import ClassHorizontalCarousel from "@/components/organisms/ClassHorizontalCarousel";
-import { useViewport } from "react-viewport-hooks";
+import CommonHeader from "@/components/molecules/CommonHeader";
 
 export default function Classes({ gymList }: any) {
   let classes = JSON.parse(gymList);
@@ -12,7 +11,7 @@ export default function Classes({ gymList }: any) {
   return (
     <div>
       <div className={"bg-gray-100 min-h-screen flex-1 items-center"}>
-        <MainHeader />
+        <CommonHeader title={"Go Fit"} />
         <GymTypeCarousel />
         <ClassHorizontalCarousel
           title={"인기"}
