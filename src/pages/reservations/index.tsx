@@ -93,7 +93,9 @@ export default function MyReservations() {
       >
         <Calendar
           onChange={(e) => {
+            //@ts-ignore
             console.log(new Date(e));
+            //@ts-ignore
             setSelectedDate(new Date(e));
           }}
           value={selectedDate}
@@ -144,7 +146,7 @@ export default function MyReservations() {
           );
         })
         .map((el, idx) => {
-          const start = new dayjs(el.startTime * 1000);
+          const start = dayjs(Number(el.startTime) * 1000);
           return (
             <div className={"w-full bg-white"} key={idx}>
               <div className={"p-4 flex flex-row"}>
