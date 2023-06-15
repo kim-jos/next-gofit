@@ -3,6 +3,7 @@ import { useState } from "react";
 import GymTypeCarousel from "@/components/organisms/GymTypeCarousel";
 import ClassHorizontalCarousel from "@/components/organisms/ClassHorizontalCarousel";
 import CommonHeader from "@/components/molecules/CommonHeader";
+import Categories from "@/components/navbar/Categories";
 
 export default function Classes({ gymList }: any) {
   let classes = JSON.parse(gymList);
@@ -12,7 +13,7 @@ export default function Classes({ gymList }: any) {
     <div>
       <div className={"bg-gray-100 min-h-screen flex-1 items-center"}>
         <CommonHeader title={"Go Fit"} />
-        <GymTypeCarousel />
+        <Categories />
         <ClassHorizontalCarousel
           title={"인기"}
           classes={gyms.filter((el: any) => el.isPopular)}
@@ -36,7 +37,7 @@ export default function Classes({ gymList }: any) {
   );
 }
 
-export async function x() {
+export async function getServerSideProps() {
   const gyms = await getClasses();
   const gymList = JSON.stringify(gyms);
   return {

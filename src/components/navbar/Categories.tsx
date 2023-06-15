@@ -11,6 +11,7 @@ const Categories = () => {
   const category = params?.get("category");
   const pathname = usePathname();
   const isMainPage = pathname === "/";
+  const isClassesPage = pathname === "/classes";
 
   const [categories, setCategories] = useState<workoutCategories[]>([]); // Use the workoutCategories model in the state
 
@@ -32,7 +33,7 @@ const Categories = () => {
     fetchCategories();
   }, []);
 
-  if (!isMainPage) {
+  if (!(isMainPage || isClassesPage)) {
     return null;
   }
 
