@@ -3,16 +3,16 @@ import Reservations from "@/backend/reservations/reservations.model";
 import { getUserReservations } from "@/backend/reservations/reservations.service";
 import { ko } from "date-fns/locale";
 import { useEffect, useState } from "react";
-import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css";
+import Calendar from "react-calendar";
 import CommonHeader from "@/components/molecules/CommonHeader";
 import { signIn } from "@/backend/auth/auth.service";
 import { getClasses } from "@/backend/classes/classes.service";
 import dayjs from "dayjs";
+import Image from "next/image";
 
 export default function MyReservations() {
-  const today = new Date(Date.now());
-  const [selectedDate, setSelectedDate] = useState(new Date(Date.now()));
+  const today = new Date();
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [myReservations, setMyReservations] = useState<Reservations[]>();
   const signInUser = useAuthContext();
   const [gymList, setGymList] = useState(null);
@@ -38,41 +38,50 @@ export default function MyReservations() {
     setSelectedDate(date);
   };
 
-  const isDateSelectable = (date: Date) => {
-    const today = new Date();
-    const prevMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-    const nextWeek = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate() + 7
-    );
+  function tileContent({ date, view }) {
+    if (
+      date.getMonth() === today.getMonth() &&
+      date.getDate() === today.getDate()
+    ) {
+      return (
+        <div
+          style={{
+            fontSize: "10px",
+            fontWeight: 400,
+            lineHeight: "12px",
+            letterSpacing: "0em",
+            textAlign: "left",
+            color: "red",
+          }}
+        >
+          오늘
+        </div>
+      );
+    } else if (
+      myReservations?.filter((el) => {
+        //@ts-ignore
+        const d = new Date(el?.date);
+        return (
+          d.getMonth() === date.getMonth() && d.getDate() === date.getDate()
+        );
+      })?.length > 0
+    ) {
+      return (
+        <div className={"flex relative items-center justify-center w-full"}>
+          <div className={"absolute rounded-full bg-[#00FF00] w-2 h-2 mt-4"} />
+        </div>
+      );
+    }
+  }
+  function tileDisabled({ date, view }) {
+    if (
+      date >
+      new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7)
+    ) {
+      return true;
+    }
+  }
 
-    return date >= prevMonth && date <= nextWeek;
-  };
-
-  const isDateDisabled = (date: Date) => {
-    return !isDateSelectable(date);
-  };
-
-  const modifiersStyles = {
-    booked: {
-      border: "4px solid",
-      borderColor: "#00FF00",
-      paddingBottom: "0px",
-    },
-  };
-
-  const bookedDays = myReservations?.map((el) => {
-    //@ts-ignore
-    return new Date(el?.date);
-  });
-  console.log(myReservations);
-  console.log(
-    gymList?.find((el) => {
-      return el.name === "스타디온 삼성";
-    })
-  );
-  console.log(gymList?.map((el) => el.name));
   return (
     <div
       className={"bg-gray-100 min-h-screen flex-1 items-center justify-center"}
@@ -82,20 +91,33 @@ export default function MyReservations() {
         className={"flex justify-center"}
         style={{ transform: "translate(1.4)" }}
       >
-        <DayPicker
-          mode="single"
-          selected={selectedDate}
-          onSelect={handleDayClick}
-          disabled={isDateDisabled}
-          locale={ko}
-          fromMonth={new Date(today.getFullYear(), today.getMonth() - 1)}
-          toMonth={new Date(today.getFullYear(), today.getMonth() + 1)}
-          // modifiersStyles={{ booked: modifiersStyles.booked }}
-          // modifiers={{ booked: [new Date(2023, 6, 8), new Date(2023, 6, 9)] }}
-          modifiers={{ booked: bookedDays }}
-          modifiersStyles={{ ...modifiersStyles }}
-          labels={{}}
+        <Calendar
+          onChange={(e) => {
+            console.log(new Date(e));
+            setSelectedDate(new Date(e));
+          }}
+          value={selectedDate}
+          tileDisabled={tileDisabled}
+          calendarType={"US"}
+          tileContent={tileContent}
+          formatDay={(locale, date) => {
+            return String(date.getDate());
+          }}
         />
+        {/*<DayPicker*/}
+        {/*  mode="single"*/}
+        {/*  selected={selectedDate}*/}
+        {/*  onSelect={handleDayClick}*/}
+        {/*  disabled={isDateDisabled}*/}
+        {/*  locale={ko}*/}
+        {/*  fromMonth={new Date(today.getFullYear(), today.getMonth() - 1)}*/}
+        {/*  toMonth={new Date(today.getFullYear(), today.getMonth() + 1)}*/}
+        {/*  // modifiersStyles={{ booked: modifiersStyles.booked }}*/}
+        {/*  // modifiers={{ booked: [new Date(2023, 6, 8), new Date(2023, 6, 9)] }}*/}
+        {/*  modifiers={{ booked: bookedDays }}*/}
+        {/*  modifiersStyles={{ ...modifiersStyles }}*/}
+        {/*  labels={{}}*/}
+        {/*/>*/}
       </div>
       {/*{myReservations !== undefined*/}
       {/*  ? myReservations.map((myReservation) => {*/}
@@ -121,28 +143,38 @@ export default function MyReservations() {
             d.getDate() === selectedDate.getDate()
           );
         })
-        .map((el) => {
+        .map((el, idx) => {
           const start = new dayjs(el.startTime * 1000);
           return (
-            <div className={"w-full bg-white"}>
+            <div className={"w-full bg-white"} key={idx}>
               <div className={"p-4 flex flex-row"}>
-                <div
-                  className={"bg-gray-400 rounded-md h-[80px] w-[80px]"}
-                ></div>
-                <div className={"flex flex-col ml-2"}>
+                <Image
+                  src={
+                    gymList?.find((e) => {
+                      return e.name === el?.className;
+                    })?.image
+                  }
+                  alt={"이미지"}
+                  width={100}
+                  height={75}
+                  className={
+                    "object-center object-cover rounded-md aspect-[4/3]"
+                  }
+                />
+                <div className={"flex flex-col ml-2 pt-2"}>
                   <div className={"text-black font-medium text-xl"}>
                     {el.className}
                   </div>
                   <div className={"font-normal text-sm"}>
                     {start.format("M/DD HH:mm A")}
                   </div>
-                  <div
-                    className={
-                      "mt-2 text-sky-400 font-medium text-lg cursor-pointer"
-                    }
-                  >
-                    리뷰 작성하기
-                  </div>
+                  {/*<div*/}
+                  {/*  className={*/}
+                  {/*    "mt-2 text-sky-400 font-medium text-lg cursor-pointer"*/}
+                  {/*  }*/}
+                  {/*>*/}
+                  {/*  리뷰 작성하기*/}
+                  {/*</div>*/}
                 </div>
               </div>
             </div>
