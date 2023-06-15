@@ -2,6 +2,7 @@ import { User, getAuth, onAuthStateChanged } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 import { getUser } from "./backend/auth/auth.service";
 import { app } from "./backend/config";
+import { ReactChannelIO } from "react-channel-plugin";
 
 const auth = getAuth(app);
 
@@ -37,7 +38,15 @@ export const AuthContextProvider = ({ children }: any) => {
 
   return (
     <AuthContext.Provider value={{ user, userRef }}>
-      {loading ? <div>로딩 중...</div> : children}
+      <ReactChannelIO
+        pluginKey={"fa60ac5a-5ab5-4552-a565-d39bd88d400c"}
+        autoBoot
+        mobileMessengerMode="iframe"
+        // customLauncherSelector="#channelTalk"
+        language="ko"
+      >
+        {loading ? <div>로딩 중...</div> : children}
+      </ReactChannelIO>
     </AuthContext.Provider>
   );
 };

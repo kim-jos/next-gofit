@@ -17,8 +17,8 @@ export default function ResponsiveTemplate({ children }) {
   }, [vw]);
 
   return (
-    <div className={isDesktop ? "items-center flex justify-center" : ""}>
-      <div className={"max-w-[400px]"}>{children}</div>
+    <div className={isDesktop ? "items-start flex justify-center" : ""}>
+      <div className={"max-w-[400px] w-full h-screen"}>{children}</div>
       <BottomNavigationBar />
     </div>
   );
