@@ -1,31 +1,31 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+"use client";
+import workoutCategories from "@/backend/workoutCategories/workoutCategories.model";
+import { getWorkoutCategories } from "@/backend/workoutCategories/workoutCategories.service";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import CategoryBox from "../CategoryBox";
-import Container from '../Container';
-import { getWorkoutCategories } from '@/backend/workoutCategories/workoutCategories.service';
-import workoutCategories from '@/backend/workoutCategories/workoutCategories.model';
-import { FaRegCircle } from 'react-icons/fa';
+import Container from "../Container";
 
 const Categories = () => {
   const params = useSearchParams();
-  const category = params?.get('category');
+  const category = params?.get("category");
   const pathname = usePathname();
-  const isMainPage = pathname === '/';
+  const isMainPage = pathname === "/";
 
   const [categories, setCategories] = useState<workoutCategories[]>([]); // Use the workoutCategories model in the state
 
-   useEffect(() => {
+  useEffect(() => {
     // Fetch the workout categories and update the state
     const fetchCategories = async () => {
       try {
         const response = await getWorkoutCategories();
         const workoutCategoriesMap = response.map(
-          (data: any) => new workoutCategories(data.category, data.imageUrl, data.priority)
+          (data: any) =>
+            new workoutCategories(data.category, data.imageUrl, data.priority)
         );
         setCategories(workoutCategoriesMap);
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
       }
     };
 
@@ -49,15 +49,17 @@ const Categories = () => {
         "
       >
         {categories.map((item) => (
-          <CategoryBox 
-            label={item.category}
-            imageUrl={item.imageUrl}
-            selected={category === item.category}
-          />
+          <div key={item.category}>
+            <CategoryBox
+              label={item.category}
+              imageUrl={item.imageUrl}
+              selected={category === item.category}
+            />
+          </div>
         ))}
       </div>
     </Container>
   );
-}
- 
+};
+
 export default Categories;

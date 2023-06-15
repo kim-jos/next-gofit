@@ -36,7 +36,7 @@ export default function Classes({ gymList }: any) {
   );
 }
 
-export async function getServerSideProps() {
+export async function x() {
   const gyms = await getClasses();
   const gymList = JSON.stringify(gyms);
   return {
