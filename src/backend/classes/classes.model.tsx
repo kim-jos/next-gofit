@@ -28,7 +28,8 @@ export default class Classes {
   price: number;
   hasShower: boolean;
   classAvailableTimeSlotsRefs: DocumentReference[];
-
+  info: string[];
+  businessHours: string[];
   constructor(
     id: string,
     refPath: string,
@@ -56,7 +57,10 @@ export default class Classes {
     instagram: string,
     price: number,
     hasShower: boolean,
-    classAvailableTimeSlotsRefs: DocumentReference[]
+    classAvailableTimeSlotsRefs: DocumentReference[],
+    info: string[],
+    businessHours: string[]
+
   ) {
     this.id = id;
     this.refPath = refPath;
@@ -85,5 +89,7 @@ export default class Classes {
     this.price = price;
     this.hasShower = hasShower;
     this.classAvailableTimeSlotsRefs = classAvailableTimeSlotsRefs;
+    this.info = info;
+    this.businessHours = businessHours;
   }
 }

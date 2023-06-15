@@ -5,12 +5,63 @@ import {
   orderBy,
   query,
   where,
+  doc,
+  getDoc
 } from "firebase/firestore/lite";
 import Classes from './classes.model';
 import { app } from "../config";
 
 
 const db = getFirestore(app);
+
+export async function getClassDetails(classRef: string) {
+  try {
+    const classDoc = await getDoc(doc(db, "classes", classRef));
+    if (classDoc.exists()) {
+      const classData = classDoc.data();
+      // Create a new instance of the Classes class with the class data
+      const classDetails = new Classes(
+        classDoc.id,
+        classData.refPath,
+        classData.name,
+        classData.image,
+        classData.exerciseType,
+        classData.priority,
+        classData.distance,
+        classData.hideClass,
+        classData.ratings,
+        classData.coords,
+        classData.isPopular,
+        classData.creditsRequired,
+        classData.paymentUrl,
+        classData.locationFilter,
+        classData.originalPrice,
+        classData.monthlyLimit,
+        classData.duration,
+        classData.misc,
+        classData.address,
+        classData.website,
+        classData.description,
+        classData.requirements,
+        classData.latitude,
+        classData.instagram,
+        classData.price,
+        classData.hasShower,
+        classData.classAvailableTimeSlotsRefs,
+        classData.info,
+        classData.businessHours,
+      );
+      return classDetails;
+    } else {
+      console.error("Class document not found");
+      return [];
+    }
+  } catch (err) {
+    console.error("Error retrieving class details:", err);
+    return [];
+  }
+}
+
 
 export async function getClasses() {
   try {
@@ -51,7 +102,9 @@ export async function getClasses() {
         data.instagram,
         data.price,
         data.hasShower,
-        data.classAvailableTimeSlotsRefs
+        data.classAvailableTimeSlotsRefs,
+        data.info,
+        data.businessHours,
       );
     });
     return classes;

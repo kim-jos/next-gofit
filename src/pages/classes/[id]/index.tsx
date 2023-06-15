@@ -1,51 +1,94 @@
 import ClassAvailableTimeSlots from "@/backend/time-slots/class-available-time-slots.model";
 import { getTimeSlots } from "@/backend/time-slots/class-available-time-slots.service";
+import Container from "@/components/Container";
 import { ko } from "date-fns/locale";
-import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import useLoginModal from "@/hooks/useLoginModal";
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useMemo, useState } from "react";
+import Classes from "@/backend/classes/classes.model";
+import { getClassDetails } from "@/backend/classes/classes.service";
+import ClassHead from "@/components/ClassHead";
+import ClassInfo from "@/components/ClassInfo";
+import Calendar from "@/components/Calendar";
 
-interface TimeSlots {
-  slots: ClassAvailableTimeSlots;
+
+
+interface ClassDetails {
+  slots: any;
+  classDetails: any;
 }
 
-export default function ClassDetails({ slots }: TimeSlots) {
-  const [selectedDate, setSelectedDate] = useState(new Date(Date.now()));
-  const [timeSlots, setTimeSlots] = useState(slots);
+export default function ClassDetailsPage({ slots, classDetails }: ClassDetails) {
+  const loginModal = useLoginModal();
+  const router = useRouter();
+  let classes = JSON.parse(classDetails);
+  let parsedSlots = JSON.parse(slots);
 
-  const handleDayClick = (date: any) => {
-    console.log("selected date: ", selectedDate);
-    setSelectedDate(date);
-  };
+  return ( 
+    <Container>
+      <div 
+        className="
+          max-w-screen-lg 
+          mx-auto
+          mb-16 
+        "
+      >
+        <div className="flex flex-col gap-4">
+          <ClassHead
+            title={classes.name}
+            imageSrc={classes.image}
+            locationValue={classes.locationFilter}
+            id={classes.id}
+            currentUser={null}
+          /> 
+          <div 
+          >
+            <ClassInfo
+              gymName={classes.name}
+              description={classes.description}
+              category={classes.exerciseType}
+              info={classes.info}
+              businessHours={classes.businessHours}
+              requirements={classes.requirements}
+              duration={classes.duration}
+              hasShower={classes.hasShower} 
+              price={classes.price} 
+              originalPrice={classes.originalPrice}/> 
+            <Calendar slots={parsedSlots}/>
+            <div className="flex justify-center mt-10">
+              <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded" onClick={()=>{}}>
+                예약하기
+              </button>
+            </div>
 
-  const isDateSelectable = (date: Date) => {
-    const today = new Date();
-    const nextWeek = new Date();
-    today.setDate(today.getDate() - 1);
-    nextWeek.setDate(today.getDate() + 8);
-
-    return date >= today && date <= nextWeek;
-  };
-
-  const isDateDisabled = (date: Date) => {
-    return !isDateSelectable(date);
-  };
-
-  return (
-    <DayPicker
-      mode="single"
-      selected={selectedDate}
-      onSelect={handleDayClick}
-      disabled={isDateDisabled}
-      locale={ko}
-    />
-  );
+            <div 
+              className="
+                order-first 
+                mb-10 
+                md:order-last 
+                md:col-span-3
+              "
+            >
+            </div>
+          </div>
+        </div>
+      </div>
+    </Container>
+    
+   );
+  
 }
 
 export async function getServerSideProps({ query }: any) {
   console.log("query: ", query);
-  let slots = await getTimeSlots(query.ref);
+
+  let slots_ = await getTimeSlots(String(query.id));
+  let slots = JSON.stringify(slots_);
+  let classDetails_ = await getClassDetails(query.id);
+  let classDetails = JSON.stringify(classDetails_);
   return {
-    props: { slots },
+    props: { slots, classDetails },
   };
 }

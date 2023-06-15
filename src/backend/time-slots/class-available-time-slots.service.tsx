@@ -11,12 +11,13 @@ import { app } from "../config";
 
 const db = getFirestore(app);
 
-export async function getTimeSlots(classRef: string) {
+export async function getTimeSlots(classId: string) {
   try {
+    const classRef = doc(db, "classes", classId);
     const timeSlots = await getDocs(
       query(
         collection(db, "classAvailableTimeSlots"),
-        where("classRef", "==", doc(db, classRef)),
+        where("classRef", "==", classRef),
         orderBy("startTime")
       )
     );
@@ -25,6 +26,6 @@ export async function getTimeSlots(classRef: string) {
       id: doc.id,
     }));
   } catch (err) {
-    console.error("Error retrieving classes:", err);
+    console.error("Error retrieving time slots:", err);
   }
 }

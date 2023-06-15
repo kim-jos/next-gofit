@@ -1,15 +1,20 @@
-import Classes from "@/backend/classes/classes.model";
-import { getClasses } from "@/backend/classes/classes.service";
-import ClassContainer from "@/components/ClassContainer";
-import Container from "@/components/Container";
-import HeartButton from "@/components/HeartButton";
-import Categories from "@/components/navbar/Categories";
-import Logo from "@/components/navbar/Logo";
-import Search from "@/components/navbar/Search";
-import UserMenu from "@/components/navbar/UserMenu";
-import Image from "next/image";
+import Image from 'next/image';
+import Container from '@/components/Container';
+import Logo from '@/components/navbar/Logo';
+import Search from '@/components/navbar/Search';
+import UserMenu from '@/components/navbar/UserMenu';
+import Categories from '@/components/navbar/Categories';
+import HeartButton from '@/components/HeartButton';
+import { getClasses } from '@/backend/classes/classes.service';
+import Classes from '@/backend/classes/classes.model';
+import ClassContainer from '@/components/ClassContainer';
+import { Inter } from "next/font/google";
+import { useRouter } from "next/navigation";
+
 
 const Home = ({ listings }: { listings: string[] }) => {
+  const parsedClasses: Classes[] = listings.map((listing) => JSON.parse(listing));
+  
   const parsedListings: Classes[] = listings.map((listing) =>
     JSON.parse(listing)
   );
@@ -18,6 +23,7 @@ const Home = ({ listings }: { listings: string[] }) => {
   if (!listings) {
     return null; // or handle the case when listings is undefined
   }
+
 
   return (
     <main>
@@ -45,14 +51,12 @@ const Home = ({ listings }: { listings: string[] }) => {
               xl:grid-cols-5
               2xl:grid-cols-6
               gap-8
-            "
+            "      
           >
-            {parsedListings.map((parsedListing) => (
-              <div
-                className="col-span-1 cursor-pointer group"
-                key={parsedListing.id}
+            {parsedClasses.map((parsedListing) => (
+              <div className="col-span-1 cursor-pointer group" key={parsedListing.id} onClick={() => router.push(`/classes/${parsedListing.id}`)}
               >
-                <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col gap-2 w-full">  
                   <div className="aspect-square w-full relative overflow-hidden rounded-xl">
                     <Image
                       fill

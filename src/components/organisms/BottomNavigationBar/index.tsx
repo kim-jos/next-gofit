@@ -30,8 +30,8 @@ export default function BottomNavigationBar() {
           value="/reservations"
           icon={<HomeIcon />}
         />
-        <BottomNavigationAction label="충전" value="/" icon={<HomeIcon />} />
-        <BottomNavigationAction label="더보기" value="/" icon={<HomeIcon />} />
+        <BottomNavigationAction label="충전" value="/maps" icon={<HomeIcon />} />
+        <BottomNavigationAction label="더보기" value="/my-page" icon={<HomeIcon />} />
       </BottomNavigation>
     </div>
   );
